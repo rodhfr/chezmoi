@@ -1,8 +1,10 @@
 #!/bin/bash
 
 if command -v chezmoi >/dev/null 2>&1; then
+    rm -rf ~/.config/keyd/
     echo "Applying chezmoi..."
-    chezmoi apply
+    cd /home/rodhfr/.local/share/chezmoi/dot_config/keyd
+    chezmoi apply --force
     echo "OK."
 else
     echo "chezmoi is not installed. Skipping."
@@ -16,28 +18,21 @@ echo "OK."
 
 # Criar diretórios, se não existirem
 echo "Recreating directory structure..."
-sudo mkdir -p /etc/keyd/include
+sudo mkdir -p /etc/keyd/
 echo "/etc/keyd/ directory created."
 echo "OK."
 
+echo "Installing new .conf, and ./include/* files..."
 
-echo "Installing new .conf, .inc and include files..."
-
-for f in "$HOME/.config/keyd/"env; do
-    [ -e "$f" ] || continue
-    echo "Copying $f to /etc/keyd/"
-    sudo ln -s "$f" /etc/keyd/
-done
-
-# Copiar arquivos de include
-for f in "$HOME/.config/keyd/"capslock; do
+# copy include files
+for f in "$HOME/.config/keyd/include/"*; do
     [ -e "$f" ] || continue
     echo "Copying $f to /etc/keyd/"
     sudo ln -s "$f" /etc/keyd/
 done
 echo "OK."
 
-# Copiar arquivos de include
+# copy confs
 for f in "$HOME/.config/keyd/"*.conf; do
     [ -e "$f" ] || continue
     echo "Copying $f to /etc/keyd/"

@@ -1,4 +1,3 @@
-space = layer(systemcontrol)
 a = C-pageup
 d = C-pagedown
 w = up
